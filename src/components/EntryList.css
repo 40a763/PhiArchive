@@ -34,7 +34,21 @@
   cursor: pointer;
   border-bottom: 1px solid transparent;
   font-variation-settings: 'wght' 400;
-  transition: font-variation-settings 0.2s ease, background 0.1s ease;
+  transition: font-variation-settings 0.2s ease, background 0.1s ease, color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.tui-list__row::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--tui-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  z-index: -1;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tui-list__row:hover {
@@ -45,13 +59,17 @@
 }
 
 .tui-list__row--selected {
-  background: var(--tui-accent);
+  background: transparent;
   color: var(--tui-bg);
   font-variation-settings: 'wght' 700;
 }
 
+.tui-list__row--selected::before {
+  transform: scaleX(1);
+}
+
 .tui-list__row--selected:hover {
-  background: var(--tui-accent);
+  background: transparent;
   font-variation-settings: 'wght' 700;
   text-decoration: none;
 }
