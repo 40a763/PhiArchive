@@ -56,6 +56,16 @@ export function Header({
           placeholder="SEARCH..."
           spellCheck={false}
         />
+        {query && (
+          <button
+            type="button"
+            className="tui-header__search-clear"
+            onClick={() => onQueryChange('')}
+            aria-label="Clear search"
+          >
+            ✕
+          </button>
+        )}
       </div>
 
       {!isMobile && (

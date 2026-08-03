@@ -92,6 +92,32 @@
   transition: font-variation-settings 0.2s ease;
 }
 
+.tui-header__search-clear {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--tui-muted);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  font-variation-settings: inherit;
+  transition: color 0.15s ease, font-variation-settings 0.2s ease;
+}
+
+.tui-header__search-clear:hover {
+  color: var(--tui-accent);
+  font-variation-settings: 'wght' 700;
+}
+
 .tui-header__filters {
   display: flex;
   align-items: center;
