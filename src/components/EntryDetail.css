@@ -1,0 +1,208 @@
+.tui-detail {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.tui-detail--empty {
+  align-items: center;
+  justify-content: center;
+  color: var(--tui-muted);
+  font-weight: var(--fw-light);
+}
+
+.tui-detail__info {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--tui-border);
+  background: var(--tui-bg-elevated);
+}
+
+.tui-detail__info-row {
+  display: flex;
+  align-items: center;
+  height: var(--tui-cell-height);
+  padding: 0 var(--tui-padding);
+  gap: 24px;
+  overflow: hidden;
+}
+
+.tui-detail__info-row:first-child {
+  justify-content: space-between;
+}
+
+.tui-detail__name {
+  font-weight: var(--fw-heavy);
+  color: var(--tui-fg-bright);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 1;
+  padding-right: 16px;
+}
+
+.tui-detail__back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--tui-border);
+  color: var(--tui-accent);
+  font-family: inherit;
+  font-size: inherit;
+  font-variation-settings: 'wght' 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.tui-detail__back:hover {
+  border-color: var(--tui-accent);
+}
+
+.tui-detail__meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.tui-detail__info-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-shrink: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.tui-detail__info-label {
+  font-weight: var(--fw-medium);
+  color: var(--tui-muted);
+  user-select: none;
+}
+
+.tui-detail__info-value {
+  color: var(--tui-fg-bright);
+  font-weight: var(--fw-regular);
+}
+
+.tui-detail__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--tui-bg);
+}
+
+.tui-detail__content-header {
+  height: var(--tui-cell-height);
+  line-height: var(--tui-cell-height);
+  padding: 0 var(--tui-padding);
+  border-bottom: 1px solid var(--tui-border);
+  font-weight: var(--fw-bold);
+  color: var(--tui-fg-bright);
+  flex-shrink: 0;
+}
+
+.tui-detail__content-body {
+  flex: 1;
+  margin: 0;
+  padding: var(--tui-padding) 0;
+  overflow: auto;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: var(--fw-regular);
+  color: var(--tui-fg);
+}
+
+.tui-detail__line {
+  display: flex;
+  align-items: baseline;
+  min-height: var(--tui-line-height);
+  padding: 0 var(--tui-padding);
+}
+
+.tui-detail__line:hover {
+  background: var(--tui-bg-elevated);
+}
+
+.tui-detail__line-number {
+  flex-shrink: 0;
+  width: 48px;
+  padding-right: 12px;
+  text-align: right;
+  color: var(--tui-muted);
+  font-variation-settings: 'wght' var(--fw-light);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  transition: font-variation-settings 0.25s ease, color 0.25s ease;
+}
+
+.tui-detail__line-number--highlight {
+  color: #ffffff;
+  font-variation-settings: 'wght' 500;
+  cursor: default;
+}
+
+.tui-detail__line:hover .tui-detail__line-number--highlight,
+.tui-detail__line-number--highlight:hover {
+  font-variation-settings: 'wght' 800;
+}
+
+.tui-detail__line-content {
+  flex: 1;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  min-width: 0;
+}
+
+.tui-detail__line--empty .tui-detail__line-content {
+  color: var(--tui-muted);
+  font-weight: var(--fw-light);
+}
+
+.tui-detail__highlight {
+  background: var(--tui-accent);
+  color: var(--tui-bg);
+  border-radius: 2px;
+  padding: 0 2px;
+  font-variation-settings: 'wght' 500;
+  transition: font-variation-settings 0.25s ease;
+}
+
+.tui-detail__line:hover .tui-detail__highlight {
+  font-variation-settings: 'wght' 800;
+}
+
+@media (max-width: 768px) {
+  .tui-detail__info-row {
+    height: auto;
+    min-height: var(--tui-cell-height);
+    flex-wrap: wrap;
+    padding: 8px var(--tui-padding);
+    gap: 12px;
+  }
+
+  .tui-detail__info-row:first-child {
+    justify-content: flex-start;
+  }
+
+  .tui-detail__name {
+    width: 100%;
+    padding-right: 0;
+  }
+
+  .tui-detail__meta {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .tui-detail__info-item {
+    white-space: normal;
+  }
+}

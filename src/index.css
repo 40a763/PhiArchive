@@ -1,0 +1,103 @@
+@font-face {
+  font-family: 'GSCodeUI';
+  src: url('/fonts/GSCodeUI[MONO,wght].ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* TUI color palette */
+  --tui-bg: #0c0c0c;
+  --tui-bg-elevated: #141414;
+  --tui-fg: #c0c0c0;
+  --tui-fg-bright: #e0e0e0;
+  --tui-border: #4a4a4a;
+  --tui-border-bright: #808080;
+  --tui-accent: #c7f50e;
+  --tui-accent-dim: #8fb30a;
+  --tui-secondary: #569cd6;
+  --tui-muted: #666666;
+
+  /* Font weight hierarchy */
+  --fw-heavy: 800;
+  --fw-bold: 700;
+  --fw-medium: 550;
+  --fw-regular: 400;
+  --fw-light: 300;
+
+  /* TUI grid: single font size, strict line height */
+  --tui-font-size: 14px;
+  --tui-line-height: 20px;
+  --tui-cell-height: 22px;
+  --tui-padding: 12px;
+  --tui-gap: 8px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'GSCodeUI', 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-size: var(--tui-font-size);
+  line-height: var(--tui-line-height);
+  font-weight: var(--fw-regular);
+  font-feature-settings: 'ss01' 1;
+  -webkit-font-feature-settings: 'ss01' 1;
+  background: var(--tui-bg);
+  color: var(--tui-fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Form elements must inherit terminal font and weight variables */
+input,
+select,
+button,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* Scrollbars: thin, dark, terminal-like */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--tui-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tui-border);
+  border: 1px solid var(--tui-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tui-border-bright);
+}
+
+::selection {
+  background: var(--tui-accent);
+  color: var(--tui-bg);
+}

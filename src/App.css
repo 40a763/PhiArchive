@@ -1,0 +1,161 @@
+.tui-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--tui-bg);
+  color: var(--tui-fg);
+}
+
+.tui-app--centered {
+  align-items: center;
+  justify-content: center;
+}
+
+.tui-app__loading,
+.tui-app__error {
+  font-weight: var(--fw-light);
+  color: var(--tui-muted);
+}
+
+.tui-app__error {
+  color: var(--tui-accent);
+}
+
+.tui-app__main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.tui-app__sidebar {
+  border-right: 1px solid var(--tui-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tui-app__resizer {
+  width: 6px;
+  flex-shrink: 0;
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+  transition: background 0.1s;
+}
+
+.tui-app__resizer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 2px;
+  width: 1px;
+  height: 100%;
+  background: var(--tui-border);
+}
+
+.tui-app__resizer:hover::before,
+.tui-app__resizer--active::before {
+  background: var(--tui-accent);
+  width: 2px;
+  left: 2px;
+}
+
+.tui-app__detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .tui-app__sidebar {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    border-right: none;
+  }
+
+  .tui-app__sidebar > .tui-list {
+    flex: 1;
+    min-height: 0;
+    height: auto;
+  }
+
+  .tui-app__resizer {
+    display: none;
+  }
+
+  .tui-app__detail--mobile {
+    position: fixed;
+    top: calc(var(--tui-cell-height) + var(--tui-padding) * 2);
+    right: 0;
+    width: 100%;
+    height: calc(100% - (var(--tui-cell-height) + var(--tui-padding) * 2));
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 10;
+    background: var(--tui-bg);
+    border-left: 1px solid var(--tui-border);
+  }
+
+  .tui-app__detail--visible {
+    transform: translateX(0);
+  }
+
+  .tui-app__mobile-footer {
+    flex-shrink: 0;
+    border-top: 1px solid var(--tui-border);
+    padding: var(--tui-padding);
+    background: var(--tui-bg-elevated);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tui-app__mobile-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tui-app__mobile-status-label {
+    color: var(--tui-muted);
+    font-weight: var(--fw-medium);
+    user-select: none;
+  }
+
+  .tui-app__mobile-status-value {
+  color: var(--tui-fg-bright);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.tui-app__mobile-status-pad {
+  white-space: pre;
+}
+
+.tui-app__mobile-status-sep {
+  margin: 0 2px;
+}
+
+.tui-app__mobile-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tui-app__mobile-filters .tui-filter {
+    flex: 1 1 auto;
+    min-width: 80px;
+    height: auto;
+    min-height: var(--tui-cell-height);
+  }
+
+  .tui-app__mobile-filters .tui-filter select {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+  }
+}
