@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import NumberFlow from '@number-flow/react'
 import './EntryDetail.css'
 
@@ -75,6 +76,42 @@ function InfoLine({ label, value, valueWeight = 'var(--fw-regular)' }) {
 }
 
 export function EntryDetail({ entry, onBack, isMobile, query }) {
+  const bodyRef = useRef(null)
+  const [selectedLineIndices, setSelectedLineIndices] = useState(() => new Set())
+
+  useEffect(() => {
+    function handleSelectionChange() {
+      const body = bodyRef.current
+      if (!body) {
+        setSelectedLineIndices(new Set())
+        return
+      }
+      const selection = window.getSelection()
+      if (!selection || selection.isCollapsed || selection.rangeCount === 0) {
+        setSelectedLineIndices(new Set())
+        return
+      }
+      const range = selection.getRangeAt(0)
+      if (!body.contains(range.commonAncestorContainer)) {
+        setSelectedLineIndices(new Set())
+        return
+      }
+      const lines = body.querySelectorAll('.tui-detail__line')
+      const next = new Set()
+      lines.forEach((lineEl, index) => {
+        if (range.intersectsNode(lineEl)) next.add(index)
+      })
+      setSelectedLineIndices(next)
+    }
+
+    document.addEventListener('selectionchange', handleSelectionChange)
+    return () => document.removeEventListener('selectionchange', handleSelectionChange)
+  }, [])
+
+  useEffect(() => {
+    setSelectedLineIndices(new Set())
+  }, [entry])
+
   if (!entry) {
     return (
       <div className="tui-detail tui-detail--empty">
@@ -115,17 +152,19 @@ export function EntryDetail({ entry, onBack, isMobile, query }) {
 
       <div className="tui-detail__content">
         <div className="tui-detail__content-header">CONTENT</div>
-        <div className="tui-detail__content-body">
+        <div className="tui-detail__content-body" ref={bodyRef}>
         {entry.内容 && String(entry.内容).trim() ? (
           String(entry.内容)
             .split('\n')
             .map((line, index) => {
               const isMatch = lineContainsQuery(line, query)
+              const isSelected = selectedLineIndices.has(index)
+              const isHighlighted = isMatch || isSelected
               return (
                 <div key={index} className="tui-detail__line">
                   <span
                     className={`tui-detail__line-number${
-                      isMatch ? ' tui-detail__line-number--highlight' : ''
+                      isHighlighted ? ' tui-detail__line-number--highlight' : ''
                     }`}
                   >
                     {index + 1}
