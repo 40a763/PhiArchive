@@ -163,7 +163,7 @@ export default function App() {
   if (loading) {
     return (
       <div className="tui-app tui-app--centered">
-        <span className="tui-app__loading">Loading PhigrOS_SATURN...</span>
+        <span className="tui-app__loading">Loading...</span>
       </div>
     )
   }
