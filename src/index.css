@@ -49,7 +49,7 @@ body,
 }
 
 body {
-  font-family: 'GSCodeUI', 'JetBrains Mono', 'Noto Sans SC', monospace;
+  font-family: 'GSCodeUI', 'Noto Sans Mono', 'Noto Sans SC', monospace;
   font-size: var(--tui-font-size);
   line-height: var(--tui-line-height);
   font-weight: var(--fw-regular);
