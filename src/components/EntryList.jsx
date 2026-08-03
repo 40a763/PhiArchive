@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import './EntryList.css'
 
-export function EntryList({ entries, selectedId, onSelect }) {
+export function EntryList({ entries, selectedId, onSelect, fastNav }) {
   const listRef = useRef(null)
   const selectedRef = useRef(null)
 
@@ -12,7 +12,7 @@ export function EntryList({ entries, selectedId, onSelect }) {
   }, [selectedId])
 
   return (
-    <div className="tui-list" ref={listRef}>
+    <div className={`tui-list${fastNav ? ' tui-list--fast-nav' : ''}`} ref={listRef}>
       <div className="tui-list__header">
         <span className="tui-list__col tui-list__col--id">NO.</span>
         <span className="tui-list__col tui-list__col--name">NAME</span>

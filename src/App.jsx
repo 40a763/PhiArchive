@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useEffect, useMemo, useState, useCallback, useRef } from 'react'
 import NumberFlow from '@number-flow/react'
 import { useEntries } from './data/useEntries.js'
 import { Header, FilterSelect } from './components/Header.jsx'
@@ -47,6 +47,9 @@ export default function App() {
     () => window.matchMedia(MOBILE_BREAKPOINT).matches,
   )
   const [showDetail, setShowDetail] = useState(false)
+  const [fastNav, setFastNav] = useState(false)
+  const lastArrowAtRef = useRef(0)
+  const fastNavTimerRef = useRef(null)
 
   const chapters = useMemo(() => uniqueSorted(entries.map((e) => e.章节)), [entries])
   const keepers = useMemo(() => uniqueSorted(entries.map((e) => e.保管单位)), [entries])
@@ -117,21 +120,32 @@ export default function App() {
     [filteredEntries, selectedId],
   )
 
+  const moveSelectionRef = useRef(moveSelection)
+  useEffect(() => {
+    moveSelectionRef.current = moveSelection
+  }, [moveSelection])
+
   useEffect(() => {
     function onKeyDown(e) {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return
-      if (e.key === 'ArrowUp') {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
         e.preventDefault()
-        moveSelection(-1)
-      } else if (e.key === 'ArrowDown') {
-        e.preventDefault()
-        moveSelection(1)
+        const now = performance.now()
+        const isFast = e.repeat || now - lastArrowAtRef.current < 200
+        lastArrowAtRef.current = now
+        if (isFast) setFastNav(true)
+        if (fastNavTimerRef.current) clearTimeout(fastNavTimerRef.current)
+        fastNavTimerRef.current = setTimeout(() => setFastNav(false), 280)
+        moveSelectionRef.current(e.key === 'ArrowUp' ? -1 : 1)
       }
     }
 
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [moveSelection])
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      if (fastNavTimerRef.current) clearTimeout(fastNavTimerRef.current)
+    }
+  }, [])
 
   const startResizing = useCallback(() => setIsResizing(true), [])
   const stopResizing = useCallback(() => setIsResizing(false), [])
@@ -201,6 +215,7 @@ export default function App() {
             entries={filteredEntries}
             selectedId={selectedId}
             onSelect={handleSelect}
+            fastNav={fastNav}
           />
           {isMobile && (
             <div className="tui-app__mobile-footer">

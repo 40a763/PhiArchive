@@ -46,7 +46,7 @@
   inset: 0;
   background: var(--tui-accent);
   transform: scaleX(0);
-  transform-origin: left center;
+  transform-origin: right center;
   z-index: -1;
   transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -66,6 +66,7 @@
 
 .tui-list__row--selected::before {
   transform: scaleX(1);
+  transform-origin: left center;
 }
 
 .tui-list__row--selected:hover {
@@ -102,4 +103,12 @@
   padding: var(--tui-padding);
   color: var(--tui-muted);
   font-weight: var(--fw-light);
+}
+
+.tui-list--fast-nav .tui-list__row::before {
+  transition: none;
+}
+
+.tui-list--fast-nav .tui-list__row {
+  transition: none;
 }
