@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Sans Mono Italic Variable — 合并预览</title>
+<style>
+  :root {
+    --bg: #1e1e2e;
+    --card: #2a2a3c;
+    --fg: #e6e6f0;
+    --muted: #9a9ab0;
+    --accent: #7aa2f7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  @font-face {
+    font-family: 'GSM Italic VF';
+    src: url('GoogleSansMono-Italic-VF.woff2') format('woff2-variations'),
+         url('GoogleSansMono-Italic-VF.ttf') format('truetype-variations');
+    font-weight: 1 1000;
+    font-style: italic;
+  }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    padding: 40px 24px;
+  }
+  h1 { font-size: 22px; margin-bottom: 6px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+  .card {
+    background: var(--card); border-radius: 12px;
+    padding: 22px 26px; margin-bottom: 20px;
+  }
+  .card h2 { font-size: 14px; color: var(--accent); margin-bottom: 14px; font-weight: 600; }
+  .row { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+  .w { color: var(--muted); font-size: 12px; min-width: 52px; }
+  .font {
+    font-family: 'GSM Italic VF';
+    font-size: 44px;
+    line-height: 1.5;
+    font-variation-settings: 'wght' 400;
+    font-style: italic;
+  }
+  .feat { font-size: 30px; }
+  .note { color: var(--muted); font-size: 12px; margin-top: 8px; }
+  input[type=range] { width: 100%; margin-top: 10px; accent-color: var(--accent); }
+  .axes { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .axes label { font-size: 12px; color: var(--muted); }
+  .axes output { font-size: 12px; color: var(--accent); min-width: 40px; }
+  .badges span {
+    display: inline-block; background: #3a3a50; border-radius: 6px;
+    padding: 3px 10px; font-size: 12px; margin: 3px 6px 3px 0; color: #c9c9dd;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  td, th { padding: 6px 10px; border-bottom: 1px solid #3a3a50; text-align: left; }
+  th { color: var(--muted); font-weight: 500; font-size: 12px; }
+  .char { font-family: 'GSM Italic VF'; font-size: 26px; }
+</style>
+</head>
+<body>
+<h1>Google Sans Mono Italic — 可变字体合并预览</h1>
+<div class="sub">三个 Unicode 子集切片(latin / latin-ext / symbols)已合并为单个 woff2,共 428 字形,保留 wght 可变轴(1–1000)与全部 OpenType 特性</div>
+
+<div class="card">
+  <h2>可变轴 wght — 拖动实时查看</h2>
+  <div class="axes">
+    <label>字重 wght</label>
+    <input type="range" id="wght" min="1" max="1000" value="400" style="flex:1; max-width:420px;">
+    <output id="wghtout">400</output>
+  </div>
+  <div class="font" id="demo">The quick brown fox jumps over the lazy dog. 0123456789</div>
+  <div class="note">可变轴(fvar/gvar/HVAR)保留:字重 1–1000 连续可调</div>
+</div>
+
+<div class="card">
+  <h2>OpenType 特性 (GSUB/GPOS)</h2>
+  <div class="badges">
+    <span>ccmp</span><span>frac</span><span>locl</span><span>ss01</span><span>ss02</span><span>ss03</span><span>mark</span><span>mkmk</span>
+  </div>
+  <table>
+    <tr><th>特性</th><th>示例</th><th>说明</th></tr>
+    <tr><td>默认</td><td class="char">a g l 1/2</td><td>无特性时</td></tr>
+    <tr><td>ss01 替代字形</td><td class="char" style="font-feature-settings:'ss01' 1;">a g l</td><td>单层/双层 a、g 等风格替代</td></tr>
+    <tr><td>ss02</td><td class="char" style="font-feature-settings:'ss02' 1;">a g l { }</td><td>风格替代 2</td></tr>
+    <tr><td>ss03</td><td class="char" style="font-feature-settings:'ss03' 1;">a g l</td><td>风格替代 3</td></tr>
+    <tr><td>frac 分数</td><td class="char" style="font-feature-settings:'frac' 1;">1/2 3/4 1/8</td><td>分数斜杠</td></tr>
+    <tr><td>ccmp 组合</td><td class="char">a&#x0308; A&#x0301; i&#x0303;</td><td>组合字符与多声调(mark/mkmk 定位)</td></tr>
+  </table>
+  <div class="note">mark/mkmk 使用 GDEF VarStore 的可变锚点定位,已在合并中统一索引</div>
+</div>
+
+<div class="card">
+  <h2>字符覆盖 (cmap 合并)</h2>
+  <table>
+    <tr><th>区块</th><th>样例字符</th><th>来源切片</th></tr>
+    <tr><td>latin 基础</td><td class="char">A B C a b c 0 1 2 é ü</td><td>latin</td></tr>
+    <tr><td>latin-ext</td><td class="char">Ā ā Ē ē Ī ī Ō ō Ū ū Ǿ ǿ</td><td>latin-ext</td></tr>
+    <tr><td>符号</td><td class="char">☺ ☻ ♥ ♦ ♣ ♠ → ⇒ ∀ ∃ ∫ ∑</td><td>symbols</td></tr>
+    <tr><td>组合标记</td><td class="char">a&#x0308; e&#x0301; o&#x0303; u&#x0308;</td><td>全部</td></tr>
+  </table>
+</div>
+
+<script>
+  const range = document.getElementById('wght');
+  const out = document.getElementById('wghtout');
+  const demo = document.getElementById('demo');
+  range.addEventListener('input', () => {
+    out.textContent = range.value;
+    demo.style.fontVariationSettings = `'wght' ${range.value}`;
+  });
+</script>
+</body>
+</html>

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import NumberFlow from '@number-flow/react'
 import './EntryDetail.css'
 
 function display(value) {
@@ -36,36 +35,11 @@ function lineContainsQuery(line, query) {
 }
 
 function InfoLine({ label, value, valueWeight = 'var(--fw-regular)' }) {
-  const isId = label === 'ID'
-  const isDate = label === 'DATE'
-  const numericValue = isId ? parseInt(value, 10) || 0 : null
-
-  const renderValue = () => {
-    if (isId) {
-      return (
-        <NumberFlow
-          value={numericValue}
-          format={{ minimumIntegerDigits: 4, useGrouping: false }}
-          className="tui-detail__info-value"
-          style={{ fontWeight: valueWeight }}
-        />
-      )
-    }
-
-    if (isDate) {
-      return (
-        <span className="tui-detail__info-value" style={{ fontWeight: valueWeight }}>
-          {display(value)}
-        </span>
-      )
-    }
-
-    return (
-      <span className="tui-detail__info-value" style={{ fontWeight: valueWeight }}>
-        {display(value)}
-      </span>
-    )
-  }
+  const renderValue = () => (
+    <span className="tui-detail__info-value" style={{ fontWeight: valueWeight }}>
+      {display(value)}
+    </span>
+  )
 
   return (
     <span className="tui-detail__info-item">
@@ -155,7 +129,7 @@ export function EntryDetail({ entry, onBack, isMobile, query }) {
         <div className="tui-detail__content-body" ref={bodyRef}>
         {entry.内容 && String(entry.内容).trim() ? (
           String(entry.内容)
-            .split('\n')
+            .split(/[\n\u2028]/)
             .map((line, index) => {
               const isMatch = lineContainsQuery(line, query)
               const isSelected = selectedLineIndices.has(index)
