@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'GSCodeUI';
-  src: url('/fonts/GSCodeUI[MONO,wght].ttf') format('truetype');
+  font-family: 'GoogleSansCode';
+  src: url('/fonts/GoogleSansCode[MONO,wght].ttf') format('truetype');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -49,7 +49,7 @@ body,
 }
 
 body {
-  font-family: 'GSCodeUI', 'Noto Sans Mono', 'Noto Sans SC', monospace;
+  font-family: 'GoogleSansCode', 'Noto Sans Mono', 'Noto Sans SC', monospace;
   font-size: var(--tui-font-size);
   line-height: var(--tui-line-height);
   font-weight: var(--fw-regular);

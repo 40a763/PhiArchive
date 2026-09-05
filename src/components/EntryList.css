@@ -61,7 +61,7 @@
 .tui-list__row--selected {
   background: transparent;
   color: var(--tui-bg);
-  font-variation-settings: 'wght' 700;
+  font-variation-settings: 'wght' 800;
 }
 
 .tui-list__row--selected::before {
@@ -71,7 +71,7 @@
 
 .tui-list__row--selected:hover {
   background: transparent;
-  font-variation-settings: 'wght' 700;
+  font-variation-settings: 'wght' 800;
   text-decoration: none;
 }
 
