@@ -69,7 +69,7 @@ export function EntryList({
     <div className={`tui-list${fastNav ? ' tui-list--fast-nav' : ''}`} ref={listRef}>
       {/* Panel header */}
       <div className="tui-list__panel-header">
-        <span className="tui-list__panel-title">{'//FOLDER_INFORMATION'}</span>
+        <span className="tui-list__panel-title">FOLDER_INFORMATION</span>
       </div>
 
       {/* Search bar */}

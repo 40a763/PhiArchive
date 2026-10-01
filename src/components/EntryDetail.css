@@ -35,7 +35,7 @@
   background: var(--surface-bar);
   font-variation-settings: 'wdth' 75, 'wght' 700;
   color: #F7F7F7;
-  letter-spacing: 1px;
+  letter-spacing: 0;
   font-size: 15px;
   clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
 }

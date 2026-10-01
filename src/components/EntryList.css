@@ -23,7 +23,7 @@
 .tui-list__panel-title {
   font-variation-settings: 'wdth' 75, 'wght' 700;
   color: #F7F7F7;
-  letter-spacing: 1px;
+  letter-spacing: 0;
   font-size: 16px;
 }
 
