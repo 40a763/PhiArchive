@@ -60,7 +60,7 @@
 
 .tui-list__row--selected {
   background: transparent;
-  color: var(--tui-bg);
+  color: #D8E5F0;
   font-variation-settings: 'wght' 800;
 }
 

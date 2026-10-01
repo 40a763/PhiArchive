@@ -168,7 +168,7 @@
 
 .tui-detail__highlight {
   background: var(--tui-accent);
-  color: var(--tui-bg);
+  color: #D8E5F0;
   border-radius: 2px;
   padding: 0 2px;
   font-variation-settings: 'wght' 500;

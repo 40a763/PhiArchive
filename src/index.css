@@ -14,8 +14,8 @@
   --tui-fg-bright: #e0e0e0;
   --tui-border: #4a4a4a;
   --tui-border-bright: #808080;
-  --tui-accent: #3770ae;
-  --tui-accent-dim: #28517d;
+  --tui-accent: #079AE4;
+  --tui-accent-dim: #056FA4;
   --tui-secondary: #569cd6;
   --tui-muted: #666666;
 
@@ -99,5 +99,5 @@ textarea {
 
 ::selection {
   background: var(--tui-accent);
-  color: var(--tui-bg);
+  color: #D8E5F0;
 }
