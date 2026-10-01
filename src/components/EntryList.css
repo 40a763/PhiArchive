@@ -208,6 +208,16 @@
   flex: 1;
 }
 
+/* Chapter this entry belongs to, shown on the right of the row */
+.tui-list__chapter {
+  flex-shrink: 0;
+  margin-left: 10px;
+  font-size: 12px;
+  font-variation-settings: 'wdth' 75, 'wght' 500;
+  white-space: nowrap;
+  opacity: 0.55;
+}
+
 /* Number of query hits in this entry, shown while searching */
 .tui-list__count {
   flex-shrink: 0;

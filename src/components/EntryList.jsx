@@ -10,6 +10,20 @@ function padSpaces(num, digits = 3) {
   return ' '.repeat(count)
 }
 
+const CN_NUM = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9 }
+
+// "第一章冰封世界" → "1-冰封世界"; "支线章节一忘忧宫" → "S1-忘忧宫"; "外传章节极星卫" → "外-极星卫"
+function shortChapter(chapter) {
+  const text = String(chapter || '')
+  let m = text.match(/^第([一二三四五六七八九])章(.*)$/)
+  if (m) return `${CN_NUM[m[1]]}-${m[2]}`
+  m = text.match(/^支线章节([一二三四五六七八九])(.*)$/)
+  if (m) return `S${CN_NUM[m[1]]}-${m[2]}`
+  m = text.match(/^外传章节(.*)$/)
+  if (m) return `外-${m[1]}`
+  return text
+}
+
 function countMatches(entry, query) {
   const q = String(query || '').toLowerCase().trim()
   if (!q) return 0
@@ -122,6 +136,7 @@ export function EntryList({
                 onClick={() => onSelect(entry.id)}
               >
                 <span className="tui-list__col tui-list__col--name">{entry.收集品 || '-'}</span>
+                <span className="tui-list__chapter">{shortChapter(entry.章节)}</span>
                 {query ? (
                   <span className="tui-list__count">{countMatches(entry, query)}</span>
                 ) : null}
