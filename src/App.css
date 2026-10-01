@@ -1,4 +1,5 @@
 .tui-app {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -6,6 +7,22 @@
   overflow: hidden;
   background: var(--tui-bg);
   color: var(--tui-fg);
+}
+
+/* Sparse, soft white dot grid on pure black */
+.tui-app::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.16) 0px,
+    rgba(255, 255, 255, 0.07) 2px,
+    rgba(255, 255, 255, 0) 5px
+  );
+  background-size: 96px 96px;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .tui-app--centered {
@@ -16,24 +33,43 @@
 .tui-app__loading,
 .tui-app__error {
   font-weight: var(--fw-light);
-  color: var(--tui-muted);
+  color: var(--tui-fg-dim);
+  z-index: 1;
 }
 
 .tui-app__error {
   color: var(--tui-accent);
 }
 
+/* The 3D scene — holds both panels with perspective */
 .tui-app__main {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex: 1;
   overflow: hidden;
+  perspective: var(--scene-perspective);
+  perspective-origin: 50% 40%;
+  padding: 28px;
+  gap: 22px;
 }
 
 .tui-app__sidebar {
-  border-right: 1px solid var(--tui-border);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
+  flex-shrink: 0;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  border: 1px solid var(--tui-panel-border);
+  background: var(--surface-card);
+  border-radius: var(--tui-radius);
+  box-shadow:
+    0 0 0 1px rgba(7, 154, 228, 0.06),
+    0 34px 80px rgba(0, 0, 0, 0.62),
+    0 0 70px rgba(7, 154, 228, 0.07);
+  transition: transform 0.12s ease-out;
+  will-change: transform;
 }
 
 .tui-app__resizer {
@@ -42,7 +78,9 @@
   cursor: col-resize;
   background: transparent;
   position: relative;
+  z-index: 2;
   transition: background 0.1s;
+  align-self: stretch;
 }
 
 .tui-app__resizer::before {
@@ -66,21 +104,36 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  border: 1px solid var(--tui-panel-border);
+  background: linear-gradient(180deg, #1e2225 0%, #121212 100%);
+  border-radius: var(--tui-radius);
+  box-shadow:
+    0 0 0 1px rgba(7, 154, 228, 0.06),
+    0 34px 80px rgba(0, 0, 0, 0.62),
+    0 0 70px rgba(7, 154, 228, 0.07);
+  transition: transform 0.12s ease-out;
+  will-change: transform;
 }
 
+/* Mobile layout — flatten the 3D effect */
 @media (max-width: 768px) {
+  .tui-app__main {
+    padding: 0;
+    gap: 0;
+    perspective: none;
+  }
+
   .tui-app__sidebar {
     width: 100% !important;
     min-width: 100% !important;
     max-width: 100% !important;
-    border-right: none;
-  }
-
-  .tui-app__sidebar > .tui-list {
-    flex: 1;
-    min-height: 0;
-    height: auto;
+    transform: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .tui-app__resizer {
@@ -89,19 +142,43 @@
 
   .tui-app__detail--mobile {
     position: fixed;
-    top: calc(var(--tui-cell-height) + var(--tui-padding) * 2);
+    top: 0;
     right: 0;
     width: 100%;
-    height: calc(100% - (var(--tui-cell-height) + var(--tui-padding) * 2));
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
+    height: 100%;
+    transform: translateX(100%) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
-    background: var(--tui-bg);
-    border-left: 1px solid var(--tui-border);
+    background: linear-gradient(180deg, #1e2225 0%, #121212 100%);
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .tui-app__detail--visible {
-    transform: translateX(0);
+    transform: translateX(0) !important;
+  }
+
+  /* Flatten all depth layers on mobile */
+  .tui-app .tui-list,
+  .tui-app .tui-list__tabs,
+  .tui-app .tui-detail {
+    transform-style: flat;
+  }
+
+  .tui-app .tui-list__panel-header,
+  .tui-app .tui-list__search,
+  .tui-app .tui-list__filters,
+  .tui-app .tui-list__tabs,
+  .tui-app .tui-list__section-label,
+  .tui-app .tui-list__body,
+  .tui-app .tui-list__footer,
+  .tui-app .tui-detail__panel-header,
+  .tui-app .tui-detail__title-bar,
+  .tui-app .tui-detail__pills,
+  .tui-app .tui-detail__content,
+  .tui-app .tui-detail__back {
+    transform: none;
   }
 
   .tui-app__mobile-footer {
@@ -121,26 +198,26 @@
   }
 
   .tui-app__mobile-status-label {
-    color: var(--tui-muted);
+    color: var(--tui-fg-dim);
     font-weight: var(--fw-medium);
     user-select: none;
   }
 
   .tui-app__mobile-status-value {
-  color: var(--tui-fg-bright);
-  font-weight: var(--fw-bold);
-  font-variant-numeric: tabular-nums;
-}
+    color: var(--tui-fg-bright);
+    font-weight: var(--fw-bold);
+    font-variant-numeric: tabular-nums;
+  }
 
-.tui-app__mobile-status-pad {
-  white-space: pre;
-}
+  .tui-app__mobile-status-pad {
+    white-space: pre;
+  }
 
-.tui-app__mobile-status-sep {
-  margin: 0 2px;
-}
+  .tui-app__mobile-status-sep {
+    margin: 0 2px;
+  }
 
-.tui-app__mobile-filters {
+  .tui-app__mobile-filters {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;

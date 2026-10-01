@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import './EntryDetail.css'
 
 function display(value) {
-  return value && String(value).trim() ? value : '-'
+  return value && String(value).trim() ? value : '—'
 }
 
 function escapeRegex(string) {
@@ -34,17 +34,11 @@ function lineContainsQuery(line, query) {
   return new RegExp(safeQuery, 'i').test(line)
 }
 
-function InfoLine({ label, value, valueWeight = 'var(--fw-regular)' }) {
-  const renderValue = () => (
-    <span className="tui-detail__info-value" style={{ fontWeight: valueWeight }}>
-      {display(value)}
-    </span>
-  )
-
+function InfoPill({ label, value }) {
   return (
-    <span className="tui-detail__info-item">
-      <span className="tui-detail__info-label">{label}</span>
-      {renderValue()}
+    <span className="tui-detail__pill">
+      <span className="tui-detail__pill-label">{label}</span>
+      <span className="tui-detail__pill-value">{display(value)}</span>
     </span>
   )
 }
@@ -96,66 +90,67 @@ export function EntryDetail({ entry, onBack, isMobile, query }) {
 
   return (
     <div className="tui-detail">
-      <div className="tui-detail__info">
-        <div className="tui-detail__info-row">
-          {isMobile && (
-            <button
-              type="button"
-              className="tui-detail__back"
-              onClick={onBack}
-              aria-label="Back to list"
-            >
-              {'<'}
-            </button>
-          )}
-          <span className="tui-detail__name">{display(entry.收集品)}</span>
-          <span className="tui-detail__meta">
-            <InfoLine label="ID" value={entry.编号} valueWeight="var(--fw-bold)" />
-            <InfoLine label="CHAPTER" value={entry.章节} valueWeight="var(--fw-bold)" />
-          </span>
-        </div>
-        <div className="tui-detail__info-row">
-          <InfoLine label="DATE" value={entry.收集时间} />
-          <InfoLine label="KEEPER" value={entry.保管单位} />
-          <InfoLine label="LEVEL" value={entry.等级} />
-          <InfoLine label="LEN" value={entry.长度} />
-          <InfoLine label="STYLE" value={entry.款式} />
-          <InfoLine label="RESEARCH" value={entry.碎数研编号} />
-        </div>
+      {/* Panel header */}
+      <div className="tui-detail__panel-header">
+        <span className="tui-detail__panel-title">{'//FILE CONTENT'}</span>
       </div>
 
-      <div className="tui-detail__content">
-        <div className="tui-detail__content-header">CONTENT</div>
-        <div className="tui-detail__content-body" ref={bodyRef}>
-        {entry.内容 && String(entry.内容).trim() ? (
-          String(entry.内容)
-            .split(/[\n\u2028]/)
-            .map((line, index) => {
-              const isMatch = lineContainsQuery(line, query)
-              const isSelected = selectedLineIndices.has(index)
-              const isHighlighted = isMatch || isSelected
-              return (
-                <div key={index} className="tui-detail__line">
-                  <span
-                    className={`tui-detail__line-number${
-                      isHighlighted ? ' tui-detail__line-number--highlight' : ''
-                    }`}
-                  >
-                    {index + 1}
-                  </span>
-                  <span className="tui-detail__line-content">
-                    {highlightText(line, query)}
-                  </span>
-                </div>
-              )
-            })
-        ) : (
-          <div className="tui-detail__line tui-detail__line--empty">
-            <span className="tui-detail__line-number">1</span>
-            <span className="tui-detail__line-content">[NO CONTENT]</span>
-          </div>
-        )}
+      {/* Back button (mobile) */}
+      {isMobile && (
+        <button
+          type="button"
+          className="tui-detail__back"
+          onClick={onBack}
+          aria-label="Back to list"
+        >
+          {'< BACK'}
+        </button>
+      )}
+
+      {/* Title */}
+      <div className="tui-detail__title-bar">
+        <h1 className="tui-detail__title">{display(entry.收集品)}</h1>
       </div>
+
+      {/* Info pills row */}
+      <div className="tui-detail__pills">
+        <InfoPill label="收集时间" value={entry.收集时间} />
+        <InfoPill label="保管单位" value={entry.保管单位} />
+        <InfoPill label="等级" value={entry.等级} />
+      </div>
+
+      {/* Content body */}
+      <div className="tui-detail__content">
+        <div className="tui-detail__content-body" ref={bodyRef}>
+          {entry.内容 && String(entry.内容).trim() ? (
+            String(entry.内容)
+              .split(/[\n\u2028]/)
+              .map((line, index) => {
+                const isMatch = lineContainsQuery(line, query)
+                const isSelected = selectedLineIndices.has(index)
+                const isHighlighted = isMatch || isSelected
+                return (
+                  <div key={index} className="tui-detail__line">
+                    <span
+                      className={`tui-detail__line-number${
+                        isHighlighted ? ' tui-detail__line-number--highlight' : ''
+                      }`}
+                    >
+                      {index + 1}
+                    </span>
+                    <span className="tui-detail__line-content">
+                      {highlightText(line, query)}
+                    </span>
+                  </div>
+                )
+              })
+          ) : (
+            <div className="tui-detail__line tui-detail__line--empty">
+              <span className="tui-detail__line-number">1</span>
+              <span className="tui-detail__line-content">[NO CONTENT]</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

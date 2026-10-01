@@ -133,6 +133,13 @@
   border: 1px solid var(--tui-border);
   padding: 0 8px;
   background: var(--tui-bg-elevated);
+  font-variation-settings: 'wdth' 100, 'wght' 400;
+  transition: font-variation-settings 0.35s ease;
+}
+
+/* Selecting anything other than "ALL" slides the axes; clearing slides them back */
+.tui-filter--active {
+  font-variation-settings: 'wdth' 50, 'wght' 700;
 }
 
 .tui-filter__label {

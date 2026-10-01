@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useState, useCallback, useRef } from 'react'
-import NumberFlow from '@number-flow/react'
 import { useEntries } from './data/useEntries.js'
-import { Header, FilterSelect } from './components/Header.jsx'
 import { EntryList } from './components/EntryList.jsx'
 import { EntryDetail } from './components/EntryDetail.jsx'
 import './App.css'
@@ -41,7 +39,7 @@ export default function App() {
   const [query, setQuery] = useState('')
   const [filters, setFilters] = useState({ chapter: '', keeper: '', level: '' })
   const [selectedId, setSelectedId] = useState(null)
-  const [sidebarWidth, setSidebarWidth] = useState(400)
+  const [sidebarWidth, setSidebarWidth] = useState(360)
   const [isResizing, setIsResizing] = useState(false)
   const [isMobile, setIsMobile] = useState(
     () => window.matchMedia(MOBILE_BREAKPOINT).matches,
@@ -50,6 +48,8 @@ export default function App() {
   const [fastNav, setFastNav] = useState(false)
   const lastArrowAtRef = useRef(0)
   const fastNavTimerRef = useRef(null)
+  const sidebarRef = useRef(null)
+  const detailRef = useRef(null)
 
   const chapters = useMemo(() => uniqueSorted(entries.map((e) => e.章节)), [entries])
   const keepers = useMemo(() => uniqueSorted(entries.map((e) => e.保管单位)), [entries])
@@ -153,7 +153,7 @@ export default function App() {
   const resize = useCallback(
     (e) => {
       if (!isResizing) return
-      const newWidth = Math.max(240, Math.min(720, e.clientX))
+      const newWidth = Math.max(240, Math.min(560, e.clientX))
       setSidebarWidth(newWidth)
     },
     [isResizing],
@@ -174,6 +174,50 @@ export default function App() {
     [filteredEntries, selectedId],
   )
 
+  const chapterName = selectedEntry?.章节 || ''
+
+  // Mouse-tracking 3D tilt — each card tilts independently toward the mouse
+  useEffect(() => {
+    if (isMobile) return
+    let rafId = null
+
+    function tiltCard(el, mouseX, mouseY) {
+      if (!el) return
+      const rect = el.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      const ry = ((mouseX - cx) / (rect.width / 2)) * 5.5
+      const rx = ((mouseY - cy) / (rect.height / 2)) * -3.5
+      const clampedRx = Math.max(-6, Math.min(6, rx))
+      const clampedRy = Math.max(-8, Math.min(8, ry))
+      el.style.transform =
+        `perspective(2200px) rotateX(${clampedRx.toFixed(2)}deg) rotateY(${clampedRy.toFixed(2)}deg)`
+    }
+
+    function handleMouseMove(e) {
+      if (rafId) return
+      const { clientX, clientY } = e
+      rafId = requestAnimationFrame(() => {
+        rafId = null
+        tiltCard(sidebarRef.current, clientX, clientY)
+        tiltCard(detailRef.current, clientX, clientY)
+      })
+    }
+
+    function handleMouseLeave() {
+      if (sidebarRef.current) sidebarRef.current.style.transform = ''
+      if (detailRef.current) detailRef.current.style.transform = ''
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    document.documentElement.addEventListener('mouseleave', handleMouseLeave)
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      document.documentElement.removeEventListener('mouseleave', handleMouseLeave)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
+  }, [isMobile])
+
   if (loading) {
     return (
       <div className="tui-app tui-app--centered">
@@ -192,18 +236,9 @@ export default function App() {
 
   return (
     <div className="tui-app">
-      <Header
-        total={entries.length}
-        filtered={filteredEntries.length}
-        query={query}
-        onQueryChange={setQuery}
-        filters={filters}
-        onFilterChange={handleFilterChange}
-        entries={entries}
-        isMobile={isMobile}
-      />
       <main className="tui-app__main">
         <aside
+          ref={sidebarRef}
           className="tui-app__sidebar"
           style={
             isMobile
@@ -216,41 +251,16 @@ export default function App() {
             selectedId={selectedId}
             onSelect={handleSelect}
             fastNav={fastNav}
+            query={query}
+            onQueryChange={setQuery}
+            total={entries.length}
+            chapterName={chapterName}
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            chapters={chapters}
+            keepers={keepers}
+            levels={levels}
           />
-          {isMobile && (
-            <div className="tui-app__mobile-footer">
-              <div className="tui-app__mobile-status">
-                <span className="tui-app__mobile-status-label">ENTRIES</span>
-                <span className="tui-app__mobile-status-value">
-                  <span className="tui-app__mobile-status-pad">{padSpaces(filteredEntries.length)}</span>
-                  <NumberFlow value={filteredEntries.length} format={{ useGrouping: false }} />
-                  <span className="tui-app__mobile-status-sep">/</span>
-                  <span className="tui-app__mobile-status-pad">{padSpaces(entries.length)}</span>
-                  <NumberFlow value={entries.length} format={{ useGrouping: false }} />
-                </span>
-              </div>
-              <div className="tui-app__mobile-filters">
-                <FilterSelect
-                  label="CHAPTER"
-                  value={filters.chapter}
-                  options={chapters}
-                  onChange={(v) => handleFilterChange('chapter', v)}
-                />
-                <FilterSelect
-                  label="KEEPER"
-                  value={filters.keeper}
-                  options={keepers}
-                  onChange={(v) => handleFilterChange('keeper', v)}
-                />
-                <FilterSelect
-                  label="LEVEL"
-                  value={filters.level}
-                  options={levels}
-                  onChange={(v) => handleFilterChange('level', v)}
-                />
-              </div>
-            </div>
-          )}
         </aside>
         {!isMobile && (
           <div
@@ -260,6 +270,7 @@ export default function App() {
           />
         )}
         <section
+          ref={detailRef}
           className={`tui-app__detail ${isMobile ? 'tui-app__detail--mobile' : ''} ${isMobile && showDetail ? 'tui-app__detail--visible' : ''}`}
         >
           <EntryDetail entry={selectedEntry} onBack={handleBack} isMobile={isMobile} query={query} />
