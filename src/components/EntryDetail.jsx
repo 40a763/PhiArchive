@@ -92,7 +92,7 @@ export function EntryDetail({ entry, onBack, isMobile, query }) {
     <div className="tui-detail">
       {/* Panel header */}
       <div className="tui-detail__panel-header">
-        <span className="tui-detail__panel-title">{'//FILE CONTENT'}</span>
+        <span className="tui-detail__panel-title">{'//FILE_CONTENT'}</span>
       </div>
 
       {/* Back button (mobile) */}
