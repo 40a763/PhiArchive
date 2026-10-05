@@ -42,7 +42,6 @@
 
 .tui-list__search-prompt {
   color: #3870AF;
-  font-variation-settings: 'wght' 700;
   user-select: none;
 }
 
@@ -53,8 +52,22 @@
   outline: none;
   color: #F7F7F7;
   font-size: 15px;
-  font-variation-settings: 'wght' 500;
   caret-color: #3870AF;
+}
+
+/* Prompt, value and clear button share one weight animation: 400 → 900 */
+.tui-list__search-prompt,
+.tui-list__search input,
+.tui-list__search-clear {
+  font-variation-settings: 'wght' 400;
+  transition: font-variation-settings 0.35s ease;
+}
+
+/* Non-empty query thickens the whole bar; clearing slides it back */
+.tui-list__search--active .tui-list__search-prompt,
+.tui-list__search--active input,
+.tui-list__search--active .tui-list__search-clear {
+  font-variation-settings: 'wght' 900;
 }
 
 .tui-list__search input::placeholder {
@@ -67,8 +80,7 @@
   color: rgba(107, 124, 136, 0.85);
   cursor: pointer;
   padding: 0 2px;
-  font-variation-settings: 'wght' 500;
-  transition: color 0.15s;
+  transition: color 0.15s, font-variation-settings 0.35s ease;
 }
 
 .tui-list__search-clear:hover {
@@ -78,17 +90,18 @@
 /* Compact filters row */
 .tui-list__filters {
   display: flex;
-  gap: 6px;
+  flex-direction: column;
+  gap: 4px;
   padding: 4px var(--tui-padding);
   border-bottom: 1px solid var(--line-soft);
   background: var(--surface-sunken);
   flex-shrink: 0;
-  flex-wrap: wrap;
   transform: translateZ(var(--z-filter));
 }
 
 .tui-list__filters .tui-filter {
-  flex: 1;
+  flex: none;
+  width: 100%;
   min-width: 0;
   height: 20px;
   padding: 0 6px;

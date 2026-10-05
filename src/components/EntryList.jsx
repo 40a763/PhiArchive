@@ -73,7 +73,7 @@ export function EntryList({
       </div>
 
       {/* Search bar */}
-      <div className="tui-list__search">
+      <div className={`tui-list__search${query ? ' tui-list__search--active' : ''}`}>
         <span className="tui-list__search-prompt">{'>'}</span>
         <input
           type="text"
