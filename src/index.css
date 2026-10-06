@@ -1,15 +1,16 @@
+/* Code font — used for tabular / numeric readouts */
 @font-face {
-  font-family: 'Saira';
-  src: url('/fonts/Saira-VariableFont_wdth,wght.ttf') format('truetype');
-  font-weight: 100 900;
+  font-family: 'GSCodeUI';
+  src: url('/fonts/GoogleSansCode.ttf') format('truetype');
+  font-weight: 300 800;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Saira';
-  src: url('/fonts/Saira-Italic-VariableFont_wdth,wght.ttf') format('truetype');
-  font-weight: 100 900;
+  font-family: 'GSCodeUI';
+  src: url('/fonts/GoogleSansCode-Italic.ttf') format('truetype');
+  font-weight: 300 800;
   font-style: italic;
   font-display: swap;
 }
@@ -30,6 +31,9 @@
   --tui-accent-glow: rgba(7, 154, 228, 0.35);
   --tui-selected-bg: #e8eef5;
   --tui-selected-fg: #0a0f16;
+
+  /* Fonts */
+  --font-code: 'GSCodeUI', monospace;
 
   /* Font weight hierarchy */
   --fw-heavy: 800;
@@ -88,7 +92,7 @@ body,
 }
 
 body {
-  font-family: 'Saira', 'Noto Sans Mono', 'Noto Sans SC', monospace;
+  font-family: 'Google Sans Flex', 'Noto Sans SC', sans-serif;
   font-size: var(--tui-font-size);
   line-height: var(--tui-line-height);
   font-weight: var(--fw-regular);

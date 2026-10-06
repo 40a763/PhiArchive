@@ -189,8 +189,8 @@
 
   .tui-app__mobile-status-value {
     color: var(--tui-fg-bright);
+    font-family: var(--font-code);
     font-weight: var(--fw-bold);
-    font-variant-numeric: tabular-nums;
   }
 
   .tui-app__mobile-status-pad {

@@ -37,9 +37,9 @@
 }
 
 .tui-header__stat-value {
+  font-family: var(--font-code);
   font-weight: var(--fw-bold);
   color: var(--tui-fg-bright);
-  font-variant-numeric: tabular-nums;
 }
 
 .tui-header__stat-pad {

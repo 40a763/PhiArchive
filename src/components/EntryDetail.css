@@ -33,7 +33,7 @@
   align-items: center;
   padding: 0 calc(var(--tui-padding) + 8px) 0 6px;
   background: var(--surface-bar);
-  font-variation-settings: 'wdth' 75, 'wght' 700;
+  font-variation-settings: 'wdth' 30, 'wght' 700;
   color: #F7F7F7;
   letter-spacing: 0;
   font-size: 15px;
@@ -163,8 +163,8 @@
   padding-right: 12px;
   text-align: right;
   color: var(--tui-fg-dim);
+  font-family: var(--font-code);
   font-variation-settings: 'wght' var(--fw-light);
-  font-variant-numeric: tabular-nums;
   user-select: none;
   transition: font-variation-settings 0.25s ease, color 0.25s ease;
 }
